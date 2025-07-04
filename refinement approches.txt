@@ -10,3 +10,4 @@ Use ML to refine entry, exit logic, Reduce number of trades using ML
 Use x* candle open - candle low.shift(1) in order to know what the value of x should be in order to refine sl 
 The above step needs to be done as tight sl increased RR but decreased win ratio significantly, if we give the price room to breathe, we might be able to make it better to capture more P/L
 REVISIT detect_swing function **** VERY IMPORTANT as it is the foundation of signals
+Lookback and lookforward could be different in swing_detectino.py file, we need to backtest with different scenarios
