@@ -7,7 +7,7 @@ import concurrent.futures
 from backtester_csv_2_entry import SwingBacktesterWithScalingEntryRefined
 # from backtester_csv import SwingBacktesterWithScaling
 # SL multipliers to test
-sl_multipliers = [3]
+sl_multipliers = [1, 1.5, 2, 2.5, 2.75,3, 3.25, 3.5, 3.75, 4]
 
 def run_backtest_for_sl(sl_mult, df_path, window, output_dir):
     try:
