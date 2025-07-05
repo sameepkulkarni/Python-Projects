@@ -10,9 +10,9 @@ Welcome to my project based on recent swing highs and lows from 5-minute Gold pr
 The trading logic revolves around:
 - Detecting minor swing highs/lows using a lookback and lookforward window, **eliminating look-ahead bias**.
 - Generating entry signals using the **liquidity grab and run** concept:
-  - **Long Entry:** Current candle’s low < last swing low AND the candle is bullish (green).
-  - **Short Entry:** Current candle’s high > last swing high AND the candle is bearish (red).
-  > *(Testing without the green/red candle confirmation is pending.)*
+  - **Long Entry:** Current candle’s low < last swing low **and** the candle is bullish (green).
+  - **Short Entry:** Current candle’s high > last swing high **and** the candle is bearish (red).
+  > ✅ *Tested removing the green/red confirmation — performance dropped significantly, so the logic was dropped.*
 
 - **Scaling In**:
   - When a new swing low forms while in a long position, re-entry occurs with an updated stop loss at the recent swing.
@@ -56,12 +56,21 @@ Contains `SwingBacktesterWithScaling` class, the core backtesting engine used in
 
 ## 🚧 Work in Progress
 
-This project is in active development and evolving. Upcoming goals:
-- Add major swing logic
-- Improve scaling mechanism
-- Integrate take-profit logic
-- Conduct volatility-aware ML tuning
-- Exclude high-impact news periods
+This project is in active development. Summary of refinement steps:
+
+- ✅ SL refinement (basic) done.
+- ✅ SL based on `x * (Open - Low.shift(1))` added to allow price room — helped improve PnL.
+- ❌ TP refinement (static) was tried — dropped due to poor RR. Will use SL trailing instead.
+- 🧪 SL trailing partially implemented — under refinement.
+- ❌ Entry without confirmation candle tested — **dropped** due to poor performance.
+- ❌ Entry refinement using volatility, structure breaks, and recency — not done.
+- ❌ TP based on structure break or swing logic — not done.
+- ❌ Opposite entry on SL trigger tested — dropped due to increased losses.
+- 🧪 MAE/MFE analysis is ongoing.
+- ❌ News session filtering — not done.
+- ❌ ML-based entry/exit refinement and trade reduction — not yet implemented.
+- ✅ `detect_swing()` refined twice — **needs to be revisited** again as it's core to signal generation.
+- ❌ Lookback vs Lookforward asymmetry in swing detection — interesting test case, yet to be done.
 
 ---
 
