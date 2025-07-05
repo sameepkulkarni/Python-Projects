@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from swings_detection import detect_swing
 import warnings
 warnings.filterwarnings('ignore')
-class SwingBacktesterWithScaling:
+class SwingBacktesterWithScalingEntryRefined:
     def __init__(self, data, swing_window=1, sl_multiplier=2):
         self.swing_window = swing_window
         self.sl_multiplier = sl_multiplier
@@ -46,15 +46,20 @@ class SwingBacktesterWithScaling:
         ]
         liquidity_grab_choices = ['Bearish_Grab', 'Bullish_Grab']
         self.data['liquidity_grab'] = np.select(liquidity_grab_conditions, liquidity_grab_choices, default=None)
-
     def generate_entry_signals(self):
-        entry_signal_conditions = [
-            (self.data['liquidity_grab'].shift(1) == 'Bullish_Grab') & (self.data['c'] > self.data['o']),
-            (self.data['liquidity_grab'].shift(1) == 'Bearish_Grab') & (self.data['c'] < self.data['o'])
-        ]
-        entry_signal_choices = [1, -1]
-        self.data['entry_signal'] = np.select(entry_signal_conditions, entry_signal_choices, default=np.nan)
-        self.data['entry_signal'] = self.data['entry_signal'].fillna(0)
+        self.data['entry_signal'] = 0  # default to no signal
+
+        # Case 1: Previous candle liquidity grab + directional close
+        prev_bullish = (self.data['liquidity_grab'].shift(1) == 'Bullish_Grab') & (self.data['c'] > self.data['o'])
+        prev_bearish = (self.data['liquidity_grab'].shift(1) == 'Bearish_Grab') & (self.data['c'] < self.data['o'])
+
+        # Case 2: Current candle liquidity grab + directional close
+        curr_bullish = (self.data['liquidity_grab'] == 'Bullish_Grab') & (self.data['c'] > self.data['o'])
+        curr_bearish = (self.data['liquidity_grab'] == 'Bearish_Grab') & (self.data['c'] < self.data['o'])
+
+        # Combine both
+        self.data.loc[prev_bullish | curr_bullish, 'entry_signal'] = 1
+        self.data.loc[prev_bearish | curr_bearish, 'entry_signal'] = -1
 
     def run_backtest(self):
         results = []
