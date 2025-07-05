@@ -1,14 +1,63 @@
-2nd refinement SL refinement basic - done
-TP refinement basic - decreased profit and RR after 2nd refinement significantly, dropped the idea, will use sl trailing later
-3rd refinement =No. of trades refinement - opposite entry when sl hits with opposite end of the candle as sl - decreased captured profit and increased losses, dropped the idea for basic, will revisit once additional rules for entries are tried
-MAE, MFE refinement
-SL trailing - partially done, yet to be refined.
-TP refinement based on structure break or swing high/low - TP is not done, we are either trailing SL or reversing the position.
-Entry refinement based on volatility, structure break, recency of last swings and more- not done
-Exclude news sessions trading from this or exclude it from backtesting- not done
-Use ML to refine entry, exit logic, Reduce number of trades using ML- not done
-Use x* candle open - candle low.shift(1) in order to know what the value of x should be in order to refine sl - done
-The above step needs to be done as tight sl increased RR but decreased win ratio significantly, if we give the price room to breathe, we might be able to make it better to capture more P/L - done
-REVISIT detect_swing function **** VERY IMPORTANT as it is the foundation of signals - refined twice
-Lookback and lookforward could be different in swing_detectino.py file, we need to backtest with different scenarios - very interesting backtesting - yet to be done
+Refinement Approaches - Project Notes
+--------------------------------------
 
+✅ 1. Second Refinement - Stop Loss (SL)
+- Basic SL refinement completed.
+
+✅ 2. TP Refinement (Basic)
+- Initially implemented, but resulted in lower profit and Risk-Reward ratio after SL refinement.
+- Idea dropped for now.
+- Plan: Use SL trailing instead of fixed TP.
+
+❌ 3. Third Refinement - No. of Trades / Opposite Entry Logic
+- Tried entering opposite position when SL is hit, with opposite candle end as SL.
+- Resulted in higher losses and lower net profit.
+- Dropped for basic version, may revisit after improving entry rules.
+
+🧪 4. MAE / MFE Analysis
+- Ongoing work to refine entries/exits using Maximum Adverse/Excursion and Favorable Excursion.
+
+🧪 5. SL Trailing Logic
+- Partially implemented.
+- Needs further refinement for consistency.
+
+❌ 6. TP Based on Structure Breaks or Swing Levels
+- Not implemented.
+- Current focus is on trailing SL or reversing positions instead of fixed TP.
+
+❌ 7. Entry Refinement (Volatility, Structure Breaks, Recency of Swings)
+- Not yet done.
+- Planned to include these factors for higher quality entries.
+
+❌ 8. Exclude News Sessions
+- Not yet implemented.
+- Plan to either avoid trades during news or exclude them from backtest results.
+
+❌ 9. ML-Based Refinement (Entry/Exit/Filtering Trades)
+- Not yet implemented.
+- Plan to use ML to optimize logic and reduce trade frequency intelligently.
+
+✅ 10. SL Refinement Using x * (Candle Open - Previous Candle Low)
+- Implemented.
+- Helped explore SL flexibility; tighter SLs improved RR but hurt win rate.
+- Allowing more room helps improve net profitability.
+
+✅ 11. Signal Engine Core – `detect_swing()` Function
+- Refined twice already.
+- Needs to be **revisited again** – critical to entry logic reliability.
+
+🧪 12. Variable Lookback & Lookforward in Swing Detection
+- Not yet backtested.
+- Important for understanding different swing detection behaviors.
+
+❌ 13. Entry Without Confirmation Candle (No Green/Red Candle Check)
+- Tested entry logic without requiring a confirmation candle (i.e., green for long, red for short).
+- Resulted in significantly negative performance.
+- Idea dropped due to poor trade quality and higher drawdown.
+
+
+--------------------------------------
+Legend:
+✅ = Done
+🧪 = In Progress / Partially Done
+❌ = Not Done / Dropped for Now
