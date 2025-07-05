@@ -4,16 +4,16 @@ import glob
 import re
 import time
 import concurrent.futures
-from backtester_csv_2_entry import SwingBacktesterWithScalingEntryRefined
-# from backtester_csv import SwingBacktesterWithScaling
+# from backtester_csv_2_entry import SwingBacktesterWithScalingEntryRefined
+from backtester_csv import SwingBacktesterWithScaling
 # SL multipliers to test
-sl_multipliers = [1, 1.5, 2, 2.5, 2.75,3, 3.25, 3.5, 3.75, 4]
+sl_multipliers = [1,1.5,2,2.5,2.75,3,3.25,3.5,3.75,4]
 
 def run_backtest_for_sl(sl_mult, df_path, window, output_dir):
     try:
         df = pd.read_csv(df_path, index_col='timestamp', parse_dates=True)
-        bt = SwingBacktesterWithScalingEntryRefined(data=df, swing_window=window, sl_multiplier=sl_mult)
-        # bt = SwingBacktesterWithScaling(data=df, swing_window=window, sl_multiplier=sl_mult)
+        # bt = SwingBacktesterWithScalingEntryRefined(data=df, swing_window=window, sl_multiplier=sl_mult)
+        bt = SwingBacktesterWithScaling(data=df, swing_window=window, sl_multiplier=sl_mult)
         bt.run_backtest()
         bt.calculate_mae_mfe()
         bt_df = bt.bt
@@ -29,7 +29,7 @@ def main():
 
     # Folder paths
     csv_folder = r'C:\Users\A\epat\Algo Project\Python-Projects\swing_csvs'
-    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'all_trades_entry_on_either_two_candles'))
+    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'all_trades'))
     os.makedirs(output_dir, exist_ok=True)
 
     # CSVs sorted
